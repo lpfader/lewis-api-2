@@ -93,31 +93,32 @@ $ </div>
       return;
     }
 
-    if (cmd.startsWith("POST /books")) {
-      const parts = cmd.split(" ");
-      const params = parts.slice(2).join(" ");
-      const title = params.match(/title=([^ ]+)/)?.[1];
-      const author = params.match(/author=([^ ]+)/)?.[1];
+if (cmd.startsWith("POST /books")) {
+  const parts = cmd.split(" ");
+  const params = parts.slice(2).join(" ");
+  const title = params.match(/title=([^ ]+)/)?.[1];
+  const author = params.match(/author=([^ ]+)/)?.[1];
+  const isbn = params.match(/isbn=([^ ]+)/)?.[1];   // <-- YOU FORGOT THIS
 
- const isbn = params.match(/isbn=([^ ]+)/)?.[1];
-     if (!title || !author) {
-        print("400 Bad Request: Missing title or author");
-      } else {
-        const newBook = {
-  id: db.length + 1,
-  title: title.replace(/_/g, " "),
-  author: author.replace(/_/g, " "),
-  isbn: isbn ? isbn.replace(/_/g, " ") : "N/A"
-};
-.push(newBook);
-        print("201 Created");
-        print(JSON.stringify(newBook, null, 2));
-      }
-      prompt();
-      return;
-    }
+  if (!title || !author) {
+    print("400 Bad Request: Missing title or author");
+  } else {
+    const newBook = {
+      id: db.length + 1,
+      title: title.replace(/_/g, " "),
+      author: author.replace(/_/g, " "),
+      isbn: isbn ? isbn.replace(/_/g, " ") : "N/A"   // <-- THIS NOW WORKS
+    };
+    db.push(newBook);
+    print("201 Created");
+    print(JSON.stringify(newBook, null, 2));
+  }
 
-if (cmd.startsWith("GET /author=")) {
+  prompt();
+  input.focus();
+  return;
+}
+(cmd.startsWith("GET /author=")) {
   const raw = cmd.replace("GET /author=", "").trim();
   const authorName = raw.replace(/_/g, " ");
   const booksByAuthor = db.filter(b => b.author === authorName);
