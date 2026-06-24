@@ -118,7 +118,7 @@ if (cmd.startsWith("POST /books")) {
   input.focus();
   return;
 }
-(cmd.startsWith("GET /author=")) {
+if (cmd.startsWith("GET /author=")) {
   const raw = cmd.replace("GET /author=", "").trim();
   const authorName = raw.replace(/_/g, " ");
   const booksByAuthor = db.filter(b => b.author === authorName);
@@ -126,7 +126,7 @@ if (cmd.startsWith("POST /books")) {
   if (booksByAuthor.length > 0) {
     print(JSON.stringify(booksByAuthor, null, 2));
   } else {
-    print("404 Not Found");
+    print("Syntax Error");
   }
 
   prompt();
