@@ -4,14 +4,17 @@
   <meta charset="UTF-8" />
   <title>Lewis API Terminal</title>
     <style>
-    body { background: #111; color: #0f0; font-family: monospace; padding: 10px; }
+    body { background: #1d0101; color: rgb(37, 130, 153); font-family: monospace; padding: 10px; }
     #terminal { white-space: pre-wrap; }
-    #input { width: 100%; background: #111; color: #0f0; border: none; outline: none; font-family: monospace; }
+    #input { width: 60%; background: #111; color: rgb(255, 255, 255); border: none; outline: none; font-family: monospace; }
   </style>
 </head>
 <body>
 <p>
-    version 4ish. ok so this is basically a simulation of how a REST API would work. All of the data is contained in HTML so you're not going to be able to actually edit any database. I will try to make it so that if you do a PUT command you can get a simulated version of what your data would look like once added to the database. 
+   This is basically a simulation of how a REST API would work. All of the data is contained in HTML so you're not going to be able to actually edit any database. I will try to make it so that if you do a PUT command you can get a simulated version of what your data would look like once added to the database. 
+</p>
+<p>
+  All of the data in the data base is presented when you do GET /books.
 </p>
 <div id="terminal">Lewis API Terminal
 Type "help" for commands.
@@ -47,12 +50,13 @@ $ </div>
 
     if (cmd === "help") {
       print("Commands:");
-      print("  GET /books");
-      print("  GET /books/{id}");
+      print(" you can type GET /books");
+      print(" do display info about just one book try GET /books/{id}");
       print("  DELETE /books/{id}");
       print("  POST /books title=... author=...");
       print("  clear");
       prompt();
+	  input.focus();
       return;
     }
 
