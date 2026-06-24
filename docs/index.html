@@ -50,10 +50,10 @@ $ </div>
 
     if (cmd === "help") {
       print("Commands:");
-      print(" you can type GET /books");
-      print(" do display info about just one book try GET /books/{id}");
-      print("  DELETE /books/{id}");
-      print("  POST /books title=... author=...");
+      print("  you can type GET /books");
+      print("  GET /books/[id] should get you the name I hope");
+      print("  DELETE /books/[id]");
+      print("  POST /books title= author= isbn=");
       print("  clear");
       prompt();
 	  input.focus();
@@ -99,15 +99,17 @@ $ </div>
       const title = params.match(/title=([^ ]+)/)?.[1];
       const author = params.match(/author=([^ ]+)/)?.[1];
 
-      if (!title || !author) {
+ const isbn = params.match(/isbn=([^ ]+)/)?.[1];
+     if (!title || !author) {
         print("400 Bad Request: Missing title or author");
       } else {
         const newBook = {
-          id: db.length + 1,
-          title: title.replace(/_/g, " "),
-          author: author.replace(/_/g, " ")
-        };
-        db.push(newBook);
+  id: db.length + 1,
+  title: title.replace(/_/g, " "),
+  author: author.replace(/_/g, " "),
+  isbn: isbn ? isbn.replace(/_/g, " ") : "N/A"
+};
+.push(newBook);
         print("201 Created");
         print(JSON.stringify(newBook, null, 2));
       }
@@ -115,6 +117,23 @@ $ </div>
       return;
     }
 
+if (cmd.startsWith("GET /author=")) {
+  const raw = cmd.replace("GET /author=", "").trim();
+  const authorName = raw.replace(/_/g, " ");
+  const booksByAuthor = db.filter(b => b.author === authorName);
+
+  if (booksByAuthor.length > 0) {
+    print(JSON.stringify(booksByAuthor, null, 2));
+  } else {
+    print("404 Not Found");
+  }
+
+  prompt();
+  input.focus();
+  return;
+}
+
+	
     print("Unknown command");
     prompt();
   }
